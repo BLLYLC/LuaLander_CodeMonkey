@@ -14,39 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentVersion: 1.00
   subtype: lunarLanderFree
-  lastShownTimestamp: 1769941774
+  lastShownTimestamp: 1770037431
   lastUpdateResponse:
     version: 1.00
     versionUrl: https://unitycodemonkey.com
-  checkedLastUpdateTimestamp: 1769941774
+  checkedLastUpdateTimestamp: 1770037431
   lastQOTDResponse:
-    questionId: 267
-    questionText: 'What is the position of the transform after running this code?
+    questionId: 268
+    questionText: 'Is this valid code?
 
-      <p>Vector3
-      targetPosition = new Vector3(10, 0, 0);</p>
-
-      <p>transform.position =
-      targetPosition;</p>
-
-      <p>targetPosition.x = 20;</p>'
-    answerA: (10, 0, 0)
-    answerB: (20, 0, 0)
-    answerC: Unknown
+      <p>string state = (health &gt; 0) ?
+      "ALIVE" : "DEAD";</p>'
+    answerA: Yes
+    answerB: No
+    answerC: 
     answerD: 
     answerE: 
-  lastQotdTimestamp: 1769941774
+  lastQotdTimestamp: 1770037431
   lastDynamicHeaderResponse:
     topImageUrl: https://codemonkeyexternal.blob.core.windows.net/external/Misc/gameDevReport_2.png
     topText: Stay up to date with the latest in Game Dev straight to your inbox!
     topLink: gamedevreport
     bottomText: My 10+ Years of C# Knowledge in 1 Course!
     bottomLink: csharpcourse
-  lastDynamicHeaderTimestamp: 1769941774
+  lastDynamicHeaderTimestamp: 1770037431
   websiteLatestMessage:
     text: <a href="https://cmonkey.co/freecourses">Check out all my FREE courses!
       Click here!</a>
-  websiteLatestMessageTimestamp: 1769941774
+  websiteLatestMessageTimestamp: 1770037431
   websiteLatestVideos:
     videos:
     - youTubeId: B2G1ZTKzJSM
@@ -57,4 +52,4 @@ MonoBehaviour:
       title: TOP 10 NEW Systems and Tools JANUARY 2026! | Unity Asset Store
     - youTubeId: 4ZcETvXRfl0
       title: Roadmaps for Game Dev SUCCESS in 2026! (Beginner, Intermediate and Marketing)
-  websiteLatestVideosTimestamp: 1769941774
+  websiteLatestVideosTimestamp: 1770037431
