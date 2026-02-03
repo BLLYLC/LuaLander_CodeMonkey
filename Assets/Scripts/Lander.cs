@@ -4,10 +4,18 @@ using UnityEngine.InputSystem;
 
 public class Lander : MonoBehaviour
 {
+    public static Lander Instance { get; private set; }
+
     public event EventHandler OnUpForce;
     public event EventHandler OnLeftForce;
     public event EventHandler OnRightForce;
     public event EventHandler OnBeforeForce;
+    public event EventHandler OnCoinPickup;
+    public event EventHandler<OnLandedEventArgs> OnLanded;
+    public class OnLandedEventArgs : EventArgs
+    {
+        public int score;
+    }
 
     private Rigidbody2D rb;
     private float fuelAmount=10f;
@@ -16,6 +24,7 @@ public class Lander : MonoBehaviour
     private float softLandingVelocityMagnitude = 4f;
     private void Awake()
     {
+        Instance = this;
         rb = GetComponent<Rigidbody2D>();
     }
     private void FixedUpdate()
@@ -79,6 +88,7 @@ public class Lander : MonoBehaviour
         print("landing speed score: " + landingSpeedScore);
         int score = Mathf.RoundToInt((landingAngleScore + landingSpeedScore) * landingPad.GetScoreMultiplier());
         print("Score: "+ score);
+        OnLanded?.Invoke(this,new OnLandedEventArgs { score = score });
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -87,7 +97,12 @@ public class Lander : MonoBehaviour
             float addFuelAmount = 10f;
             fuelAmount += addFuelAmount;
             fuelPickup.DestroySelf();  
-        }   
+        }
+        if (collision.gameObject.TryGetComponent(out CoinPickup coinPickup))
+        {   
+            OnCoinPickup?.Invoke(this, EventArgs.Empty);
+            coinPickup.DestroySelf();
+        }
     }
     private void ConsumeFuel()
     {
