@@ -2,18 +2,26 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {   
-
+    public static GameManager Instance;
     private int score;
+    private float time;
 
-    private void Start()
+    private void Awake()
     {
+        Instance = this;
+    }
+    private void Start()
+    {       
         Lander.Instance.OnCoinPickup += Lander_OnCoinPickup;
         Lander.Instance.OnLanded += Lander_OnLanded;
     }
-
+    private void Update()
+    {
+        time += Time.deltaTime;
+    }
     private void Lander_OnLanded(object sender, Lander.OnLandedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        AddScore(e.score);
     }
 
     private void Lander_OnCoinPickup(object sender, System.EventArgs e)
@@ -24,5 +32,13 @@ public class GameManager : MonoBehaviour
     public void AddScore(int scoreAmount)
     {
         score += scoreAmount;
+    }
+    public int GetScore()
+    {
+        return score;
+    }
+    public float GetTime()
+    {
+        return time;
     }
 }
