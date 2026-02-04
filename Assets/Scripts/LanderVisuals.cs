@@ -34,6 +34,7 @@ public class LanderVisuals : MonoBehaviour
             case Lander.LandingType.TooSteepAngle:
                 //Crash
                 Instantiate(landerExplosionVfx, transform.position, Quaternion.identity);
+                gameObject.SetActive(false); 
                 break;
         }
     }

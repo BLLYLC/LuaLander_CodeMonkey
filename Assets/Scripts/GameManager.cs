@@ -1,8 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
-{   
-    public static GameManager Instance;
+{
+    public static GameManager Instance { get; private set; } 
+
+    [SerializeField] private int levelNumber;
+    [SerializeField] private List<GameLevel> gameLevelList;
     private int score;
     private float time;
     private bool isTimerActive;
@@ -16,6 +20,8 @@ public class GameManager : MonoBehaviour
         Lander.Instance.OnCoinPickup += Lander_OnCoinPickup;
         Lander.Instance.OnLanded += Lander_OnLanded;
         Lander.Instance.OnStateChanged += Lander_OnStateChanged;
+
+        LoadCurrentLevel();
     }
 
     private void Lander_OnStateChanged(object sender, Lander.OnStateChangedEventArgs e)
@@ -39,7 +45,17 @@ public class GameManager : MonoBehaviour
     {
         AddScore(500);
     }
-
+    private void LoadCurrentLevel()
+    {
+        foreach(GameLevel gameLevel in gameLevelList)
+        {
+            if(gameLevel.GetLevelNumber() == levelNumber)
+            {
+                 GameLevel spawnedGameLevel= Instantiate(gameLevel,Vector3.zero,Quaternion.identity);
+                Lander.Instance.transform.position = spawnedGameLevel.GetLanderStartPosition();
+            }
+        }
+    }
     public void AddScore(int scoreAmount)
     {
         score += scoreAmount;
