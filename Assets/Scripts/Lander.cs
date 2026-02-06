@@ -57,9 +57,9 @@ public class Lander : MonoBehaviour
         {
             default:
             case State.WaitingToStart:
-                if (Keyboard.current.upArrowKey.isPressed || 
-                    Keyboard.current.rightArrowKey.isPressed || 
-                    Keyboard.current.leftArrowKey.isPressed)
+                if (GameInput.instance.IsUpActionPressed() ||
+                    GameInput.instance.IsRightActionPressed() ||
+                    GameInput.instance.IsLeftActionPressed() || GameInput.instance.GetMovementInputVector2() != Vector2.zero)
                 {
                     rb.gravityScale = GRAVITY_NORMAL;
                     SetState(State.Normal);
@@ -70,21 +70,21 @@ public class Lander : MonoBehaviour
                 {
                     return;
                 }
-
-                if (Keyboard.current.upArrowKey.isPressed)
+                float gamePadDeadzone = .4f; 
+                if (GameInput.instance.IsUpActionPressed()||GameInput.instance.GetMovementInputVector2().y>gamePadDeadzone)
                 {
                     float force = 700f;
                     rb.AddForce(force * transform.up * Time.deltaTime);
                     ConsumeFuel();
                     OnUpForce?.Invoke(this, EventArgs.Empty);
                 }
-                if (Keyboard.current.leftArrowKey.isPressed)
+                if (GameInput.instance.IsLeftActionPressed()|| GameInput.instance.GetMovementInputVector2().x < -gamePadDeadzone)
                 {
                     rb.AddTorque(turnSpeed * Time.deltaTime);
                     ConsumeFuel();
                     OnLeftForce?.Invoke(this, EventArgs.Empty);
                 }
-                if (Keyboard.current.rightArrowKey.isPressed)
+                if (GameInput.instance.IsRightActionPressed()|| GameInput.instance.GetMovementInputVector2().x > gamePadDeadzone)
                 {
                     rb.AddTorque(-turnSpeed * Time.deltaTime);
                     ConsumeFuel();
