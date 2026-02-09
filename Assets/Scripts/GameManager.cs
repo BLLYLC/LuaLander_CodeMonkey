@@ -6,15 +6,23 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; } 
-
+    public static GameManager Instance { get; private set; }
+    
+    private static int totalScore;
     private static int levelNumber=1;
+
+    public static void ResetStaticData()
+    {
+        levelNumber = 1;
+        totalScore =0;
+    }
 
     public event EventHandler OnGamePaused;
     public event EventHandler OnGameUnpaused;
 
     [SerializeField] private List<GameLevel> gameLevelList;
     [SerializeField] private CinemachineCamera cinemachineCamera;
+    
     private int score;
     private float time;
     private bool isTimerActive;
@@ -78,16 +86,22 @@ public class GameManager : MonoBehaviour
     }
     private void LoadCurrentLevel()
     {
+        GameLevel gameLevel = GetGameLevel();
+        GameLevel spawnedGameLevel = Instantiate(gameLevel, Vector3.zero, Quaternion.identity);
+        Lander.Instance.transform.position = spawnedGameLevel.GetLanderStartPosition();
+        cinemachineCamera.Target.TrackingTarget = spawnedGameLevel.getCameraStartTargetTransform();
+        CinemachineZoom2D.Instance.SetTargetOrthographicSize(spawnedGameLevel.GetZoomedOutOrthoGraphicSize());
+    }
+    private GameLevel GetGameLevel()
+    {
         foreach(GameLevel gameLevel in gameLevelList)
         {
             if(gameLevel.GetLevelNumber() == levelNumber)
             {
-                 GameLevel spawnedGameLevel= Instantiate(gameLevel,Vector3.zero,Quaternion.identity);
-                Lander.Instance.transform.position = spawnedGameLevel.GetLanderStartPosition();
-                cinemachineCamera.Target.TrackingTarget = spawnedGameLevel.getCameraStartTargetTransform();
-                CinemachineZoom2D.Instance.SetTargetOrthographicSize(spawnedGameLevel.GetZoomedOutOrthoGraphicSize());
+                return gameLevel;
             }
         }
+        return null;
     }
     public void AddScore(int scoreAmount)
     {
@@ -104,7 +118,20 @@ public class GameManager : MonoBehaviour
     public void GoToNextLevel()
     {
         levelNumber++;
-        SceneLoader.LoadScene(SceneLoader.Scene.GameScene);
+        totalScore+= score;
+        if (GetGameLevel() == null)
+        {
+            SceneLoader.LoadScene(SceneLoader.Scene.GameOverScene);
+        }
+        else
+        {
+            SceneLoader.LoadScene(SceneLoader.Scene.GameScene);
+        }
+            
+    }
+    public int GetTotalScore()
+    {
+        return totalScore;
     }
     public void RetryLevel()
     {
